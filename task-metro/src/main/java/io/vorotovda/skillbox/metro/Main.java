@@ -1,3 +1,5 @@
+package io.vorotovda.skillbox.metro;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -47,7 +49,7 @@ public class Main {
         try (PrintWriter out = new PrintWriter(path)) {
             out.write(resultObject.toString());
         } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+            throw new MetroException("Файл не найден: " + path, e);
         }
 
     }
@@ -89,7 +91,7 @@ public class Main {
         try (PrintWriter out = new PrintWriter(path)) {
             out.write(resultObject.toString());
         } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+            throw new MetroException("Файл не найден: " + path, e);
         }
     }
 
@@ -101,7 +103,7 @@ public class Main {
         try (PrintWriter out = new PrintWriter(path)) {
             out.write(jsonObject.toString());
         } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+            throw new MetroException("Файл не найден: " + path, e);
         }
     }
 

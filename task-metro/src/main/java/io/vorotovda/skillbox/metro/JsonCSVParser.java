@@ -1,3 +1,5 @@
+package io.vorotovda.skillbox.metro;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -45,7 +47,7 @@ public class JsonCSVParser {
                     .collect(Collectors.toList());
             result.put("json", resultJson);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new MetroException("Ошибка чтения json файлов из каталога: " + this.path, e);
         }
         try (Stream<Path> walk = Files.walk(Paths.get(this.path))) {
             resultCSV = walk
@@ -55,7 +57,7 @@ public class JsonCSVParser {
                     .collect(Collectors.toList());
             result.put("csv", resultCSV);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new MetroException("Ошибка чтения csv файлов из каталога: " + this.path, e);
         }
         return result;
     }
@@ -111,7 +113,7 @@ public class JsonCSVParser {
                     }
                 }
             } catch (ParseException e) {
-                throw new RuntimeException(e);
+                throw new MetroException("Ошибка парсинга файла: " + path, e);
             }
         }
     }
@@ -135,7 +137,7 @@ public class JsonCSVParser {
                         stations.get(properties[0]).setDate(properties[1]);
                     }
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    throw new MetroException("Ошибка чтения файла: " + path, e);
                 }
             } else if (path.contains("depths")) {
                 try {
@@ -148,7 +150,7 @@ public class JsonCSVParser {
                         stations.get(properties[0]).setDepth(properties[1]);
                     }
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    throw new MetroException("Ошибка чтения файла: " + path, e);
                 }
             }
         }
@@ -222,10 +224,10 @@ public class JsonCSVParser {
             JSONObject stationsData = (JSONObject) jsonData.get("stations");
             for (Object line : stationsData.keySet()) {
                 JSONArray stations = (JSONArray) stationsData.get(line);
-                result.put(line.toString(),stations.size());
+                result.put(line.toString(), stations.size());
             }
         } catch (ParseException e) {
-            throw new RuntimeException(e);
+            throw new MetroException("Ошибка парсинга файла: " + path, e);
         }
         return result;
     }
@@ -246,13 +248,11 @@ public class JsonCSVParser {
                 builder.append(str);
             }
         } catch (IOException e) {
-            throw new RuntimeException("Ошибка парсинга файла: " + path,e);
+            throw new MetroException("Ошибка парсинга файла: " + path, e);
         }
         return builder.toString();
 
     }
-
-
 
 
 }
