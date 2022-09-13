@@ -1,7 +1,10 @@
+package io.vorotovda.skillbox.metro;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -14,10 +17,6 @@ import java.util.TreeMap;
  */
 public class HtmlObject {
     /**
-     * Содержит путь к файлу
-     */
-    public final String path;
-    /**
      * Содержит html файл после парсинга
      */
     private final String parsedFile;
@@ -28,7 +27,6 @@ public class HtmlObject {
      * @param path Путь к html файлу
      */
     public HtmlObject(String path) {
-        this.path = path;
         this.parsedFile = parseFile(path);
     }
 
@@ -41,12 +39,13 @@ public class HtmlObject {
     private String parseFile(String path) {
         StringBuilder builder = new StringBuilder();
 
+        List<String> lines;
         try {
-            List<String> lines = Files.readAllLines(Paths.get(path));
-            builder.append(lines);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+            lines = Files.readAllLines(Paths.get(path));
+        } catch (IOException e) {
+            throw new MetroException("Ошибка чтения файла: " + path, e);
         }
+        builder.append(lines);
 
         return builder.toString();
     }

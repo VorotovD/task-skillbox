@@ -1,3 +1,5 @@
+package io.vorotovda.skillbox.metro;
+
 /**
  * Класс описывает станцию на линии метрополитена
  */
