@@ -2,6 +2,12 @@ package task;
 
 import java.io.FileOutputStream;
 
+/**
+ * Класс для генерации и записи автомобильных номеров в файл до оптимизации.
+ * Задание:
+ * 1. Провести оптимизацию метода padNumber.
+ * 2. Реализовать вывод номеров одновременно в несколько файлов из нескольких потоков.
+ */
 public class Loader {
 
     public static void main(String[] args) throws Exception {

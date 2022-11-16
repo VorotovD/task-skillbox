@@ -1,11 +1,12 @@
 package solution;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Класс записывает автомобильные номера в файлы в группах по количеству регионов без использования многопоточности.
+ * Класс для поблочной записи автомобильных номеров в n файлов.
  */
 public class LoadToFilesWithoutMThreads {
 
@@ -25,11 +26,8 @@ public class LoadToFilesWithoutMThreads {
     }
 
     public void writeFiles() throws Exception {
-        long start = System.currentTimeMillis();
-
         int count = 1;
         for (int regionCode = 1; regionCode <= regionCodesCount; regionCode++) {
-
             if (regionCode - count == countRegionsByFile) {
 
                 loadNumbersByFirstLetter(count, regionCode);
@@ -39,19 +37,16 @@ public class LoadToFilesWithoutMThreads {
         if (count + countRegionsByFile != regionCodesCount) {
             loadNumbersByFirstLetter(count, regionCodesCount + 1);
         }
-
-        System.out.println((System.currentTimeMillis() - start) + " ms");
     }
 
     private void loadNumbersByFirstLetter(int startRegion, int endRegion) throws IOException {
         FileWriter writer = new FileWriter
-                ("CarNumberGenerator/res/numbers" +
+                ("src/main/java/result/numbers" +
                         "From" +
                         startRegion +
                         "To" +
                         (endRegion - 1) +
                         ".txt");
-
         for (int regionCode = startRegion; regionCode < endRegion; regionCode++) {
             StringBuilder builder = new StringBuilder();
             for (int number = 1; number <= numbersCount; number++) {
@@ -70,7 +65,6 @@ public class LoadToFilesWithoutMThreads {
             }
             writer.write(builder.toString());
         }
-
         writer.flush();
         writer.close();
     }

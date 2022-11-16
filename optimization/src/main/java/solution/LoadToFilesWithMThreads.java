@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * Класс для поблочной записи автомобильных номеров в n файлов в многопоточном режиме
+ */
 public class LoadToFilesWithMThreads implements Runnable {
 
     private static final List<String> regionCodes;
@@ -13,7 +16,7 @@ public class LoadToFilesWithMThreads implements Runnable {
     private static final char[] letters = {'У', 'К', 'Е', 'Н', 'Х', 'В', 'А', 'Р', 'О', 'С', 'М', 'Т'};
     private static final int regionCodesCount = 99;
     private static final int numbersCount = 999;
-    private static final int countRegionsByFile = 30;
+    private final int countRegionsByFile;
     private final int startRegion;
     private final int endRegion;
 
@@ -24,23 +27,22 @@ public class LoadToFilesWithMThreads implements Runnable {
         padNumber(2, regionCodes, 99);
     }
 
-    public LoadToFilesWithMThreads(int startRegion, int endRegion) {
+    public LoadToFilesWithMThreads(int startRegion, int endRegion, int countRegionsByFile) {
         this.startRegion = startRegion;
         this.endRegion = endRegion;
+        this.countRegionsByFile = countRegionsByFile;
     }
 
     @Override
     public void run() {
-        long start = System.currentTimeMillis();
         try {
             FileWriter writer = new FileWriter
-                    ("CarNumberGenerator/res/numbers" +
+                    ("src/main/java/result/numbers" +
                             "From" +
                             startRegion +
                             "To" +
                             (endRegion - 1) +
                             ".txt");
-
             for (int regionCode = startRegion; regionCode < endRegion; regionCode++) {
                 StringBuilder builder = new StringBuilder();
                 for (int number = 1; number <= numbersCount; number++) {
@@ -65,7 +67,6 @@ public class LoadToFilesWithMThreads implements Runnable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        System.out.println(System.currentTimeMillis() - start + " ms");
     }
 
 
@@ -85,7 +86,7 @@ public class LoadToFilesWithMThreads implements Runnable {
         return regionCodesCount;
     }
 
-    public static int getCountRegionsByFile() {
+    public int getCountRegionsByFile() {
         return countRegionsByFile;
     }
 }
